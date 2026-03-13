@@ -7,6 +7,8 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
   const [playerName, setPlayerName] = useState('');
   const [roomIdToJoin, setRoomIdToJoin] = useState(defaultRoomId || '');
   const [isJoinMode, setIsJoinMode] = useState(!!defaultRoomId);
+  const [isCopyActive, setIsCopyActive] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleCreateRoom = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,13 +28,27 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
   };
 
   const copyInviteLink = () => {
-    const url = `${window.location.origin}/room/${room.id}`;
-    navigator.clipboard.writeText(url);
+    if (!room?.id) return;
+    const code = room.id;
+
+    navigator.clipboard.writeText(code).then(() => {
+      setIsCopyActive(true);
+      setToastMessage(`Game code ${code} has been added to clipboard`);
+
+      setTimeout(() => {
+        setIsCopyActive(false);
+      }, 180);
+
+      setTimeout(() => {
+        setToastMessage(null);
+      }, 2000);
+    });
   };
 
   if (room) {
     const isHost = socket?.id === room.host;
     return (
+      <>
       <div className="screen-center">
         <div className="flat-card animate-fade-in" style={{ width: '100%', maxWidth: '700px', padding: 0 }}>
           <div className="linear-accent-bar">
@@ -47,8 +63,16 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
                 <h2 className="title-small" style={{ fontSize: '2.5rem', margin: 0 }}>Room / {room.id}</h2>
                 <p className="subtitle" style={{ margin: '8px 0 0 0' }}>Waiting for players...</p>
               </div>
-              <button onClick={copyInviteLink} style={{ padding: '10px 16px', fontSize: '0.9rem' }}>
-                <Copy size={16} /> Link
+              <button
+                onClick={copyInviteLink}
+                style={{
+                  padding: '10px 16px',
+                  fontSize: '0.9rem',
+                  transform: isCopyActive ? 'scale(1.07)' : 'scale(1)',
+                  transition: 'transform 0.15s ease',
+                }}
+              >
+                <Copy size={16} /> Code
               </button>
             </div>
 
@@ -88,6 +112,27 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
           </div>
         </div>
       </div>
+      {toastMessage && (
+        <div
+          className="title-small"
+          style={{
+            position: 'fixed',
+            bottom: '32px',
+            left: '50%',
+            transform: 'translateX(-50%) scale(1.05)',
+            padding: '16px 28px',
+            background: 'var(--bg-elevated)',
+            border: 'var(--line-thickness) solid var(--border-color)',
+            boxShadow: '0 10px 24px rgba(0,0,0,0.35)',
+            borderRadius: '999px',
+            fontSize: '1.2rem',
+            zIndex: 1000,
+          }}
+        >
+          {toastMessage}
+        </div>
+      )}
+      </>
     );
   }
 
