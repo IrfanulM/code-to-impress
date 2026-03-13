@@ -1,10 +1,17 @@
 import { ArrowRight } from 'lucide-react';
+import { useSocket } from '../context/SocketContext';
+import { useNavigate } from 'react-router-dom';
 
 export function Results({ room }: { room: any }) {
   const sortedPlayers = room.players;
+  const { socket } = useSocket();
+  const navigate = useNavigate();
 
   const playAgain = () => {
-    window.location.href = '/';
+    if (socket) {
+      socket.emit('leaveRoom');
+    }
+    navigate('/');
   };
 
   return (

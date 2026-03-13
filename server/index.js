@@ -24,6 +24,10 @@ io.on('connection', (socket) => {
     roomManager.createRoom(socket, playerName);
   });
 
+  socket.on('leaveRoom', () => {
+    roomManager.leaveRoom(socket);
+  });
+
   socket.on('joinRoom', ({ roomId, playerName }) => {
     roomManager.joinRoom(socket, roomId, playerName);
   });
