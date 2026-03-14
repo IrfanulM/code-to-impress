@@ -154,6 +154,14 @@ export class RoomManager {
     this.playerRooms.delete(socketId);
   }
 
+  leaveRoom(socket) {
+    const roomId = this.playerRooms.get(socket.id);
+    if (roomId) {
+      socket.leave(roomId);
+    }
+    this.handleDisconnect(socket.id);
+  }
+
   _sanitizeRoom(room) {
     return {
       id: room.id,
