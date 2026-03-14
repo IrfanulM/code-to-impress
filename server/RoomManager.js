@@ -153,8 +153,17 @@ export class RoomManager {
         this.io.to(roomId).emit('resultsCalculated');
         this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
       } else {
+        // 3+ player game: reassign host when host left (random if 2+ remaining)
         if (room.host === socketId) {
-          room.host = room.players[0].id; // Reassign host
+          if (room.players.length >= 2) {
+            room.host = room.players[Math.floor(Math.random() * room.players.length)].id;
+          } else {
+            room.host = room.players[0].id;
+          }
+          const newHost = room.players.find(p => p.id === room.host);
+          if (newHost) {
+            this.io.to(roomId).emit('hostReassigned', { newHostId: room.host, newHostName: newHost.name });
+          }
         }
         this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
       }
