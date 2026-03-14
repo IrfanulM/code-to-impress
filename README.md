@@ -30,7 +30,7 @@ You will need to run the client and the server simultaneously in separate termin
 Start the backend server:
 ```bash
 cd server
-npm run dev
+npm start
 ```
 
 Start the frontend server:
