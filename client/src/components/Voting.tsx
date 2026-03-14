@@ -30,11 +30,18 @@ export function Voting({ room }: { room: any }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%', background: 'var(--bg-main)' }}>
       {/* Top Header */}
-      <header style={{ padding: '24px 32px', borderBottom: 'var(--line-thickness) solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
-        <div>
-          <h2 className="title-small" style={{ margin: 0, fontSize: '1.8rem' }}>Voting Phase</h2>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
+            <span style={{ width: '4px', height: '4px', background: 'var(--border-color)', borderRadius: '50%' }}></span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-main)' }}>Rating Phase</span>
+          </div>
         </div>
-        <p style={{ margin: 0, fontWeight: 500, color: 'var(--text-muted)' }}>Rate the designs of the other players</p>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <p style={{ margin: 0, fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-main)', letterSpacing: '0.5px' }}>RATE THE DESIGNS</p>
+        </div>
       </header>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>

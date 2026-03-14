@@ -144,7 +144,7 @@ export function GameRoom({ room }: { room: any }) {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderRight: 'var(--line-thickness) solid var(--border-color)', background: '#FAFAFA' }}>
           
           {/* Editor Header / Tabs */}
-          <div style={{ display: 'flex', background: 'white', height: '48px' }}>
+          <div style={{ display: 'flex',  borderBottom: 'var(--line-thickness) solid var(--border-color)', background: 'white', height: '48px' }}>
             <button 
               className="no-swoop"
               onClick={() => setActiveTab('css')}

@@ -42,23 +42,30 @@ export function TemplateSelection({ room }: { room: any }) {
   };
 
   return (
-    <div className="screen-center" style={{ background: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%' }}>
       
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', borderBottom: 'var(--line-thickness) solid var(--border-color)', width: '100%', boxSizing: 'border-box' }}>
+      {/* Top Header */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
           <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
-          <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
+            <span style={{ width: '4px', height: '4px', background: 'var(--border-color)', borderRadius: '50%' }}></span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-main)' }}>Voting Phase</span>
+          </div>
         </div>
-        <div style={{ 
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
             gap: '8px', 
             fontSize: '1.25rem', 
-            fontWeight: '600',
+            fontWeight: '600', 
             color: timeLeft <= 10000 ? 'var(--primary)' : 'var(--text-main)', 
           }}>
             <Timer size={20} />
             0:{formatTime(timeLeft).padStart(2, '0')}
+          </div>
         </div>
       </header>
 
@@ -76,7 +83,7 @@ export function TemplateSelection({ room }: { room: any }) {
                 className="no-swoop"
                 onClick={() => handleVote(opt.index)}
                 style={{
-                  background: isSelected ? 'rgba(0,0,0,0.03)' : 'white',
+                  background: isSelected ? '#F5F5F5' : 'white',
                   border: isSelected ? '4px solid var(--text-main)' : '4px solid var(--border-color)',
                   padding: '32px',
                   borderRadius: '16px',
