@@ -105,12 +105,23 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
                   const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--text-main)'];
                   const color = colors[i % colors.length];
                   return (
-                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', border: 'var(--line-thickness) solid var(--border-color)' }}>
+                    <div 
+                      key={p.id} 
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '16px', 
+                        padding: '16px', 
+                        border: 'var(--line-thickness) solid var(--border-color)',
+                        background: 'white',
+                        boxShadow: '4px 4px 0px var(--border-color)',
+                      }}
+                    >
                       <div style={{ width: '12px', height: '12px', background: color, borderRadius: '50%' }}></div>
                       <span style={{ fontWeight: p.id === socket?.id ? '600' : '400', fontSize: '1.1rem' }}>
                         {p.name} {p.id === socket?.id && '(You)'}
                       </span>
-                      {p.id === room.host && <span style={{ marginLeft: 'auto', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase' }}>Host</span>}
+                      {p.id === room.host && <span className="bauhaus-label" style={{ marginLeft: 'auto' }}>Host</span>}
                     </div>
                   );
                 })}
@@ -119,17 +130,10 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
 
             <div style={{ 
               marginBottom: '32px', 
-              padding: '20px 24px', 
+              padding: '24px', 
               border: 'var(--line-thickness) solid var(--border-color)', 
               background: 'var(--bg-main)',
-              position: 'relative'
             }}>
-              {/* Top Accent Line for the settings box */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', display: 'flex' }}>
-                <div style={{ flex: 1, background: 'var(--accent)' }}></div>
-                <div style={{ flex: 1, background: 'var(--secondary)' }}></div>
-                <div style={{ flex: 1, background: 'var(--primary)' }}></div>
-              </div>
 
               <h3 style={{ 
                 display: 'flex', 
@@ -305,7 +309,9 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
         <div style={{ padding: '48px' }}>
           <div style={{ marginBottom: '40px' }}>
             <Code2 size={32} color="var(--primary)" style={{ marginBottom: '16px' }} />
-            <h1 className="title-linear">Code <span style={{ fontWeight: 400 }}>To</span><br/>Impress</h1>
+            <div style={{ position: 'relative' }}>
+              <h1 className="title-linear">Code <span style={{ fontWeight: 400 }}>To</span><br/>Impress</h1>
+            </div>
             <p className="subtitle" style={{ marginTop: '16px' }}>Dress To Impress, but for developers.</p>
           </div>
 

@@ -55,9 +55,36 @@ export function Results({ room }: { room: any }) {
                   color: isTop ? 'white' : 'var(--text-main)',
                   position: 'relative',
                   border: 'var(--line-thickness) solid var(--border-color)',
-                  borderTop: index === 0 ? 'var(--line-thickness) solid var(--border-color)' : 'none'
+                  borderTop: index === 0 ? 'var(--line-thickness) solid var(--border-color)' : 'none',
+                  overflow: 'hidden'
                 }}
               >
+                {isTop && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-50px',
+                    right: '-50px',
+                    width: '200px',
+                    height: '200px',
+                    background: 'var(--primary)',
+                    opacity: 0.1,
+                    borderRadius: '50%',
+                    pointerEvents: 'none'
+                  }}></div>
+                )}
+                {isTop && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-30px',
+                    left: '100px',
+                    width: '60px',
+                    height: '60px',
+                    border: '10px solid var(--accent)',
+                    opacity: 0.2,
+                    pointerEvents: 'none',
+                    transform: 'rotate(45deg)'
+                  }}></div>
+                )}
                 {/* Ranking block */}
                 <div style={{ 
                   width: '80px', 

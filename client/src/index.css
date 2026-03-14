@@ -11,6 +11,7 @@
   --border-color: #1A1A1A;
   --transition: 0.2s ease;
   --line-thickness: 2px;
+  --bg-elevated: #FFFFFF;
 }
 
 * {
@@ -79,18 +80,6 @@ button:hover::before {
   transform: scaleY(1);
 }
 
-button:disabled {
-  background: #f0f0f0 !important;
-  border-color: #ddd !important;
-  color: #aaa !important;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-button:disabled::before {
-  display: none;
-}
-
 button.no-swoop::before {
   display: none !important;
 }
@@ -99,13 +88,35 @@ button.no-swoop:hover {
   color: inherit !important;
 }
 
+button:disabled {
+  background: #f0f0f0 !important;
+  border-color: #ddd !important;
+  color: #aaa !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+button:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 button.btn-primary {
   background: var(--primary);
   color: white;
   border-color: var(--primary);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+button.btn-primary:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0px var(--text-main);
+  border-color: var(--text-main);
+  color: white; /* Keep text white, don't inherit the global swipe white-out */
+}
+
 button.btn-primary::before {
-  background: #C02C21;
+  display: none; /* Specifically disable the swipe for primary buttons */
 }
 
 /* Form Styles */
@@ -136,6 +147,7 @@ input::placeholder {
   background: var(--bg-card);
   padding: 48px;
   border: var(--line-thickness) solid var(--border-color);
+  box-shadow: 12px 12px 0px var(--border-color);
 }
 
 /* Layout Utilities */
@@ -157,11 +169,11 @@ input::placeholder {
 .title-linear {
   color: var(--text-main);
   font-size: 4rem;
-  font-weight: 800;
+  font-weight: 900;
   margin-bottom: 0px;
   text-transform: uppercase;
-  letter-spacing: -1px;
-  line-height: 1.1;
+  letter-spacing: -2px;
+  line-height: 1;
 }
 
 .title-small {
@@ -192,6 +204,29 @@ input::placeholder {
   letter-spacing: 1px;
 }
 
+.bauhaus-label {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--text-main);
+  color: white;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.bauhaus-label::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--text-main);
+  z-index: -1;
+}
+
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
@@ -203,7 +238,7 @@ input::placeholder {
 
 /* Linear Accents */
 .linear-accent-bar {
-  display: flex;
+  display: none;
   height: 4px;
   width: 100%;
 }
@@ -223,7 +258,7 @@ input::placeholder {
 .custom-tooltip[data-msg]::after {
   content: attr(data-msg);
   position: absolute;
-  bottom: 110%;
+  bottom: calc(100% + 5.5px);
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   background: var(--text-main);
@@ -263,4 +298,110 @@ input::placeholder {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+/* --- Bauhaus Background Art --- */
+.bauhaus-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -100;
+  overflow: hidden;
+  background-color: var(--bg-main);
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.bauhaus-bg-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.15;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.15;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shape-circle {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  top: -100px;
+  right: -100px;
+}
+
+.shape-square {
+  width: 300px;
+  height: 300px;
+  background-color: var(--secondary);
+  bottom: 10%;
+  left: -50px;
+  transform: rotate(15deg);
+}
+
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 200px solid transparent;
+  border-right: 200px solid transparent;
+  border-bottom: 350px solid var(--accent);
+  bottom: -50px;
+  right: 15%;
+  transform: rotate(-10deg);
+}
+
+.shape-h-line {
+  height: 1px;
+  width: 100%;
+  background: var(--border-color);
+  opacity: 0.05;
+}
+
+.shape-v-line {
+  width: 1px;
+  height: 100%;
+  background: var(--border-color);
+  opacity: 0.05;
+}
+
+/* Decorative Dots (Pointillism Influence) */
+.dot-pattern {
+  position: absolute;
+  top: 20%;
+  right: 25%;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(var(--text-main) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.1;
+}
+
+.bauhaus-frame {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  border: 1px solid var(--border-color);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .shape-circle { width: 300px; height: 300px; }
+  .shape-square { width: 150px; height: 150px; }
+  .shape-triangle { border-left-width: 100px; border-right-width: 100px; border-bottom-width: 175px; }
+  .bauhaus-frame { top: 20px; left: 20px; right: 20px; bottom: 20px; }
 }

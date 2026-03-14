@@ -6,6 +6,7 @@ import { GameRoom } from './components/GameRoom';
 import { TemplateSelection } from './components/TemplateSelection';
 import { Voting } from './components/Voting';
 import { Results } from './components/Results';
+import { GeometricBackground } from './components/GeometricBackground';
 
 function GameController() {
   const { roomId } = useParams();
@@ -187,6 +188,7 @@ function GameController() {
 function App() {
   return (
     <SocketProvider>
+      <GeometricBackground />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<GameController />} />

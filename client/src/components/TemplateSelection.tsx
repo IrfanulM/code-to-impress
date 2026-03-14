@@ -45,33 +45,40 @@ export function TemplateSelection({ room }: { room: any }) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%' }}>
       
       {/* Top Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-          <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
-            <span style={{ width: '4px', height: '4px', background: 'var(--border-color)', borderRadius: '50%' }}></span>
-            <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-main)' }}>Voting Phase</span>
-          </div>
+      <header style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
+        <div className="linear-accent-bar" style={{ height: '4px' }}>
+          <div className="bar-red"></div>
+          <div className="bar-blue"></div>
+          <div className="bar-yellow"></div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px', 
-            fontSize: '1.25rem', 
-            fontWeight: '600', 
-            color: timeLeft <= 10000 ? 'var(--primary)' : 'var(--text-main)', 
-          }}>
-            <Timer size={20} />
-            0:{formatTime(timeLeft).padStart(2, '0')}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+            <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
+              <span style={{ width: '4px', height: '4px', background: 'var(--border-color)', borderRadius: '50%' }}></span>
+              <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-main)' }}>Voting Phase</span>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              fontSize: '1.25rem', 
+              fontWeight: '600', 
+              color: timeLeft <= 10000 ? 'var(--primary)' : 'var(--text-main)', 
+            }}>
+              <Timer size={20} />
+              0:{formatTime(timeLeft).padStart(2, '0')}
+            </div>
           </div>
         </div>
       </header>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', boxSizing: 'border-box' }}>
         <h1 className="title-linear" style={{ marginBottom: '8px' }}>Vote for an Interface</h1>
-        <p className="subtitle" style={{ marginBottom: '64px', textAlign: 'center' }}>Choose the prompt you want to build. Most votes wins.</p>
+        <p className="subtitle" style={{ marginBottom: '64px', textAlign: 'center' }}>Choose the HTML template you want to design.</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', width: '100%', maxWidth: '900px' }}>
           {room.templateOptions?.map((opt: any) => {

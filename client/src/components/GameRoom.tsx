@@ -79,7 +79,12 @@ export function GameRoom({ room }: { room: any }) {
               </style>
             </head>
             <body>
-              ${htmlTemplate || '<div style="color: #888; font-family: sans-serif;">Wait for it...</div>'}
+              ${htmlTemplate || `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; gap: 24px; opacity: 0.3;">
+                  <div style="width: 48px; height: 48px; background: #005BBB;"></div>
+                  <div style="font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 14px;">Waiting for Code...</div>
+                </div>
+              `}
             </body>
           </html>
         `);
@@ -98,8 +103,14 @@ export function GameRoom({ room }: { room: any }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%' }}>
       {/* Top Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+      <header style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
+        <div className="linear-accent-bar" style={{ height: '4px' }}>
+          <div className="bar-red"></div>
+          <div className="bar-blue"></div>
+          <div className="bar-yellow"></div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
           <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
@@ -135,7 +146,8 @@ export function GameRoom({ room }: { room: any }) {
             {formatTime(timeLeft)}
           </div>
         </div>
-      </header>
+      </div>
+    </header>
 
       {/* Main Workspace */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>

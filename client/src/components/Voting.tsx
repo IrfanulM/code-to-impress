@@ -30,8 +30,14 @@ export function Voting({ room }: { room: any }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%', background: 'var(--bg-main)' }}>
       {/* Top Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+      <header style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-main)', borderBottom: 'var(--line-thickness) solid var(--border-color)' }}>
+        <div className="linear-accent-bar" style={{ height: '4px' }}>
+          <div className="bar-red"></div>
+          <div className="bar-blue"></div>
+          <div className="bar-yellow"></div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
           <h2 style={{ margin: 0, padding: 0, fontSize: '1.5rem' }} className="title-small">Code to Impress</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Room {room.id}</span>
@@ -42,7 +48,8 @@ export function Voting({ room }: { room: any }) {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <p style={{ margin: 0, fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-main)', letterSpacing: '0.5px' }}>RATE THE DESIGNS</p>
         </div>
-      </header>
+      </div>
+    </header>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         
@@ -124,7 +131,12 @@ export function Voting({ room }: { room: any }) {
                           </style>
                         </head>
                         <body>
-                          ${room.htmlTemplate || '<div style="color: #666;">Preview unvailable.</div>'}
+                          ${room.htmlTemplate || `
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; gap: 24px; opacity: 0.3;">
+                              <div style="width: 48px; height: 48px; background: #E03C31; border-radius: 50%;"></div>
+                              <div style="font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 14px;">Review Phase</div>
+                            </div>
+                          `}
                         </body>
                       </html>
                     `}
