@@ -140,19 +140,25 @@ export class RoomManager {
     const roomId = this.playerRooms.get(socketId);
     if (!roomId) return;
     
+    this.playerRooms.delete(socketId);
+    
     const room = this.rooms.get(roomId);
     if (room) {
-      room.players = room.players.filter(p => p.id !== socketId);
-      if (room.players.length === 0) {
+      if (room.state !== 'RESULTS') {
+        room.players = room.players.filter(p => p.id !== socketId);
+      }
+      
+      const activePlayers = room.players.filter(p => this.playerRooms.has(p.id));
+      
+      if (activePlayers.length === 0) {
         this.rooms.delete(roomId);
       } else {
-        if (room.host === socketId) {
-          room.host = room.players[0].id; // Reassign host
+        if (room.host === socketId && activePlayers.length > 0) {
+          room.host = activePlayers[0].id; // Reassign host
         }
         this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
       }
     }
-    this.playerRooms.delete(socketId);
   }
 
   leaveRoom(socket) {

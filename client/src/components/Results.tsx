@@ -1,17 +1,23 @@
 import { ArrowRight } from 'lucide-react';
-import { useSocket } from '../context/SocketContext';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export function Results({ room }: { room: any }) {
-  const sortedPlayers = room.players;
-  const { socket } = useSocket();
-  const navigate = useNavigate();
+  const [sortedPlayers, setSortedPlayers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const storageKey = `game_results_${room.id}`;
+    const stored = localStorage.getItem(storageKey);
+    
+    if (stored) {
+      setSortedPlayers(JSON.parse(stored));
+    } else {
+      setSortedPlayers(room.players);
+      localStorage.setItem(storageKey, JSON.stringify(room.players));
+    }
+  }, [room.id, room.players]);
 
   const playAgain = () => {
-    if (socket) {
-      socket.emit('leaveRoom');
-    }
-    navigate('/');
+    window.location.href = '/';
   };
 
   return (
