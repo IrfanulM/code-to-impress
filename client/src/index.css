@@ -56,6 +56,7 @@ button {
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 button::before {
@@ -80,12 +81,27 @@ button:hover::before {
   transform: scaleY(1);
 }
 
+button.btn-danger-swoop::before {
+  background: var(--primary) !important;
+}
+
+button.btn-danger-swoop:hover {
+  color: #FFFFFF !important;
+  border-color: var(--primary) !important;
+}
+
+button.btn-danger-swoop:hover::before {
+  transform: scaleY(1) !important;
+}
+
 button.no-swoop::before {
   display: none !important;
 }
 
 button.no-swoop:hover {
   color: inherit !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 button:disabled {

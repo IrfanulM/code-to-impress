@@ -121,6 +121,7 @@ export function GameRoom({ room }: { room: any }) {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {room.host === socket?.id && (
               <button 
+                className="btn-danger-swoop"
                 onClick={() => socket?.emit('forceEndGame', { roomId: room.id })} 
                 style={{ 
                   padding: '8px 16px', 
@@ -150,35 +151,33 @@ export function GameRoom({ room }: { room: any }) {
     </header>
 
       {/* Main Workspace */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', padding: '32px', gap: '32px', background: 'transparent' }}>
         
         {/* Editor Pane */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderRight: 'var(--line-thickness) solid var(--border-color)', background: '#FAFAFA' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white', border: 'var(--line-thickness) solid var(--border-color)', boxShadow: '12px 12px 0px var(--border-color)', overflow: 'hidden' }}>
           
           {/* Editor Header / Tabs */}
-          <div style={{ display: 'flex',  borderBottom: 'var(--line-thickness) solid var(--border-color)', background: 'white', height: '48px' }}>
+          <div style={{ display: 'flex',  borderBottom: 'var(--line-thickness) solid var(--border-color)', background: '#EAEAEA', height: '56px' }}>
             <button 
               className="no-swoop"
               onClick={() => setActiveTab('css')}
-              style={{ flex: 1, padding: '0 16px', border: 'none', height: '100%', background: 'transparent', color: activeTab === 'css' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '600', letterSpacing: '1px', textAlign: 'left', justifyContent: 'flex-start', position: 'relative' }}
+              style={{ flex: 1, padding: '0 24px', border: 'none', height: '100%', background: activeTab === 'css' ? 'white' : 'transparent', color: activeTab === 'css' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '800', letterSpacing: '1px', textAlign: 'left', justifyContent: 'flex-start', position: 'relative' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '8px', height: '8px', background: 'var(--secondary)', borderRadius: '50%', opacity: activeTab === 'css' ? 1 : 0 }}></div>
+                <div style={{ width: '10px', height: '10px', background: 'var(--secondary)', borderRadius: '50%', opacity: activeTab === 'css' ? 1 : 0.4 }}></div>
                 styles.css
               </div>
-              {activeTab === 'css' && <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--secondary)' }}></div>}
             </button>
             <div style={{ width: 'var(--line-thickness)', background: 'var(--border-color)' }}></div>
             <button 
               className="no-swoop"
               onClick={() => setActiveTab('html')}
-              style={{ flex: 1, padding: '0 16px', border: 'none', height: '100%', background: 'transparent', color: activeTab === 'html' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '600', letterSpacing: '1px', textAlign: 'left', justifyContent: 'flex-start', position: 'relative' }}
+              style={{ flex: 1, padding: '0 24px', border: 'none', height: '100%', background: activeTab === 'html' ? 'white' : 'transparent', color: activeTab === 'html' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '800', letterSpacing: '1px', textAlign: 'left', justifyContent: 'flex-start', position: 'relative' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%', opacity: activeTab === 'html' ? 1 : 0 }}></div>
+                <div style={{ width: '10px', height: '10px', background: 'var(--primary)', borderRadius: '50%', opacity: activeTab === 'html' ? 1 : 0.4 }}></div>
                 index.html
               </div>
-              {activeTab === 'html' && <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--primary)' }}></div>}
             </button>
           </div>
 
@@ -248,9 +247,9 @@ export function GameRoom({ room }: { room: any }) {
         </div>
 
         {/* Live Preview Pane */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white' }}>
-          <div style={{ height: '48px', padding: '0 24px', background: 'white', color: 'var(--text-main)', fontSize: '0.9rem', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', borderBottom: 'var(--line-thickness) solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '8px', height: '8px', background: 'var(--accent)', borderRadius: '50%' }}></div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white', border: 'var(--line-thickness) solid var(--border-color)', boxShadow: '12px 12px 0px var(--border-color)', overflow: 'hidden' }}>
+          <div style={{ height: '56px', padding: '0 24px', background: 'var(--accent)', color: 'var(--text-main)', fontSize: '0.9rem', fontWeight: '800', letterSpacing: '1px', textTransform: 'uppercase', borderBottom: 'var(--line-thickness) solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '12px', height: '12px', background: 'white', borderRadius: '50%', border: '2px solid var(--text-main)' }}></div>
             Live Preview
           </div>
           <div style={{ flex: 1, overflow: 'hidden' }}>
