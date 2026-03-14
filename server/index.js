@@ -6,6 +6,12 @@ import { RoomManager } from './RoomManager.js';
 
 const app = express();
 app.use(cors());
+
+// Health check for Uptime Robot
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 const server = createServer(app);
 
 const io = new Server(server, {
