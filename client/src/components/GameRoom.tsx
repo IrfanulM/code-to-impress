@@ -136,6 +136,7 @@ export function GameRoom({ room }: { room: any }) {
           {/* Editor Header / Tabs */}
           <div style={{ display: 'flex', borderBottom: 'var(--line-thickness) solid var(--border-color)', background: 'white' }}>
             <button 
+              className="no-swoop"
               onClick={() => setActiveTab('css')}
               style={{ flex: 1, padding: '12px 16px', border: 'none', background: 'transparent', color: activeTab === 'css' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '600', letterSpacing: '1px', borderBottom: activeTab === 'css' ? '2px solid var(--secondary)' : '2px solid transparent', textAlign: 'left', justifyContent: 'flex-start' }}
             >
@@ -146,6 +147,7 @@ export function GameRoom({ room }: { room: any }) {
             </button>
             <div style={{ width: 'var(--line-thickness)', background: 'var(--border-color)' }}></div>
             <button 
+              className="no-swoop"
               onClick={() => setActiveTab('html')}
               style={{ flex: 1, padding: '12px 16px', border: 'none', background: 'transparent', color: activeTab === 'html' ? 'var(--text-main)' : 'var(--text-muted)', borderRadius: 0, fontFamily: "'Jost', sans-serif", fontSize: '0.9rem', fontWeight: '600', letterSpacing: '1px', borderBottom: activeTab === 'html' ? '2px solid var(--primary)' : '2px solid transparent', textAlign: 'left', justifyContent: 'flex-start' }}
             >

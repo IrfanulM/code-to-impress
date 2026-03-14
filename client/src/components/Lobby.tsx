@@ -156,6 +156,7 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
           <div style={{ display: 'flex', borderBottom: 'var(--line-thickness) solid var(--border-color)', marginBottom: '32px' }}>
             <button 
               type="button"
+              className="no-swoop"
               style={{ flex: 1, border: 'none', background: 'transparent', color: !isJoinMode ? 'var(--text-main)' : 'var(--text-muted)', borderBottom: !isJoinMode ? '2px solid var(--primary)' : '2px solid transparent' }}
               onClick={() => setIsJoinMode(false)}
             >
@@ -163,6 +164,7 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
             </button>
             <button 
               type="button"
+              className="no-swoop"
               style={{ flex: 1, border: 'none', background: 'transparent', color: isJoinMode ? 'var(--text-main)' : 'var(--text-muted)', borderBottom: isJoinMode ? '2px solid var(--primary)' : '2px solid transparent' }}
               onClick={() => setIsJoinMode(true)}
             >

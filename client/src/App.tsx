@@ -3,6 +3,7 @@ import { SocketProvider, useSocket } from './context/SocketContext';
 import { useEffect, useState } from 'react';
 import { Lobby } from './components/Lobby';
 import { GameRoom } from './components/GameRoom';
+import { TemplateSelection } from './components/TemplateSelection';
 import { Voting } from './components/Voting';
 import { Results } from './components/Results';
 
@@ -52,6 +53,8 @@ function GameController() {
   switch (room.state) {
     case 'LOBBY':
       return <Lobby room={room} />;
+    case 'TEMPLATE_VOTING':
+      return <TemplateSelection room={room} />;
     case 'PLAYING':
       return <GameRoom room={room} />;
     case 'VOTING':

@@ -46,6 +46,10 @@ io.on('connection', (socket) => {
     roomManager.forceEndGame(roomId, socket.id);
   });
 
+  socket.on('submitTemplateVote', ({ roomId, templateIndex }) => {
+    roomManager.submitTemplateVote(socket.id, roomId, templateIndex);
+  });
+
   socket.on('submitCss', ({ roomId, css }) => {
     roomManager.submitCss(socket.id, roomId, css);
   });

@@ -51,7 +51,79 @@ export class RoomManager {
     const room = this.rooms.get(roomId);
     if (!room || room.host !== socketId || room.state !== 'LOBBY') return;
     
+    room.state = 'TEMPLATE_VOTING';
+    const VOTING_DURATION_MS = 60 * 1000; // 1 min timer
+    room.endTime = Date.now() + VOTING_DURATION_MS;
+    
+    // Pick 4 unique random templates
+    const availableIndices = Array.from(htmlPrompts.keys());
+    const selectedIndices = [];
+    for (let i = 0; i < 4; i++) {
+        const randomIndex = Math.floor(Math.random() * availableIndices.length);
+        selectedIndices.push(availableIndices[randomIndex]);
+        availableIndices.splice(randomIndex, 1);
+    }
+    
+    room.templateOptions = selectedIndices.map(index => ({
+        index,
+        name: htmlPrompts[index].name,
+        votes: [] // array of socketIds who voted for this
+    }));
+
+    this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
+
+    room.timerTimeout = setTimeout(() => {
+      this.startActualGame(roomId);
+    }, VOTING_DURATION_MS);
+  }
+
+  submitTemplateVote(socketId, roomId, templateIndex) {
+    const room = this.rooms.get(roomId);
+    if (!room || room.state !== 'TEMPLATE_VOTING') return;
+
+    // Remove old vote
+    room.templateOptions.forEach(opt => {
+        opt.votes = opt.votes.filter(id => id !== socketId);
+    });
+
+    // Add new vote
+    const selectedOption = room.templateOptions.find(opt => opt.index === templateIndex);
+    if (selectedOption) {
+        selectedOption.votes.push(socketId);
+    }
+
+    this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
+
+    // Check if everyone voted
+    let totalVotes = 0;
+    room.templateOptions.forEach(opt => { totalVotes += opt.votes.length; });
+    
+    const activePlayers = room.players.filter(p => this.playerRooms.has(p.id));
+    if (totalVotes >= activePlayers.length) {
+        clearTimeout(room.timerTimeout);
+        this.startActualGame(roomId);
+    }
+  }
+
+  startActualGame(roomId) {
+    const room = this.rooms.get(roomId);
+    if (!room || room.state !== 'TEMPLATE_VOTING') return;
+
+    // Determine winner
+    let maxVotes = -1;
+    let winningIndex = room.templateOptions[0].index;
+    
+    room.templateOptions.forEach(opt => {
+        if (opt.votes.length > maxVotes) {
+            maxVotes = opt.votes.length;
+            winningIndex = opt.index;
+        }
+    });
+
     room.state = 'PLAYING';
+    room.htmlIndex = winningIndex;
+    room.templateOptions = null; // Clean up
+
     const GAME_DURATION_MS = 10 * 60 * 1000; // 10 minutes
     room.endTime = Date.now() + GAME_DURATION_MS;
 
@@ -64,8 +136,7 @@ export class RoomManager {
     });
     this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
 
-    // Basic timer handling. In a robust production app, use scheduled jobs.
-    setTimeout(() => {
+    room.timerTimeout = setTimeout(() => {
       this.finishGameTime(roomId);
     }, GAME_DURATION_MS);
   }
@@ -182,8 +253,14 @@ export class RoomManager {
         css: room.state === 'PLAYING' ? null : p.css
       })),
       endTime: room.endTime,
-      htmlTemplate: room.state !== 'LOBBY' ? htmlPrompts[room.htmlIndex].html : null,
-      promptName: room.state !== 'LOBBY' ? htmlPrompts[room.htmlIndex].name : null
+      htmlTemplate: (room.state !== 'LOBBY' && room.state !== 'TEMPLATE_VOTING') ? htmlPrompts[room.htmlIndex].html : null,
+      promptName: (room.state !== 'LOBBY' && room.state !== 'TEMPLATE_VOTING') ? htmlPrompts[room.htmlIndex].name : null,
+      templateOptions: room.templateOptions ? room.templateOptions.map(opt => ({
+          index: opt.index,
+          name: opt.name,
+          voteCount: opt.votes.length,
+          votes: opt.votes
+      })) : null
     };
   }
 }

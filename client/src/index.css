@@ -89,6 +89,14 @@ button:disabled::before {
   display: none;
 }
 
+button.no-swoop::before {
+  display: none !important;
+}
+
+button.no-swoop:hover {
+  color: inherit !important;
+}
+
 button.btn-primary {
   background: var(--primary);
   color: white;
