@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSocket } from '../context/SocketContext';
 import { Users, Code2, Copy, ArrowRight, Minus, Plus } from 'lucide-react';
-import Avatar from 'boring-avatars';
+import { UserAvatar } from './UserAvatar';
 
 export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: string }) {
   const { socket } = useSocket();
@@ -115,14 +115,7 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
                         boxShadow: '4px 4px 0px var(--border-color)',
                       }}
                     >
-                      <div style={{ width: '40px', height: '40px', border: 'var(--line-thickness) solid var(--border-color)', borderRadius: '50%', overflow: 'hidden' }}>
-                        <Avatar 
-                          size={40} 
-                          name={p.name} 
-                          variant="beam" 
-                          colors={[['#E03C31', '#005BBB', '#FFD100'][(p.name || '').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) % 3]]} 
-                        />
-                      </div>
+                      <UserAvatar name={p.name} size={40} />
                       <span style={{ fontWeight: p.id === socket?.id ? '600' : '400', fontSize: '1.1rem' }}>
                         {p.name} {p.id === socket?.id && '(You)'}
                       </span>
@@ -342,14 +335,7 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
           {!isJoinMode ? (
             <form onSubmit={handleCreateRoom} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <div style={{ width: '48px', height: '48px', border: 'var(--line-thickness) solid var(--border-color)', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
-                  <Avatar 
-                    size={48} 
-                    name={playerName || 'Guest'} 
-                    variant="beam" 
-                    colors={[['#E03C31', '#005BBB', '#FFD100'][(playerName || 'Guest').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) % 3]]} 
-                  />
-                </div>
+                  <UserAvatar name={playerName || 'Guest'} size={48} />
                 <input 
                   type="text" 
                   placeholder="Your Nickname" 
@@ -374,14 +360,7 @@ export function Lobby({ room, defaultRoomId }: { room?: any, defaultRoomId?: str
                 style={{ textTransform: 'uppercase', letterSpacing: '2px' }}
               />
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <div style={{ width: '48px', height: '48px', border: 'var(--line-thickness) solid var(--border-color)', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
-                  <Avatar 
-                    size={48} 
-                    name={playerName || 'Guest'} 
-                    variant="beam" 
-                    colors={[['#E03C31', '#005BBB', '#FFD100'][(playerName || 'Guest').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) % 3]]} 
-                  />
-                </div>
+                  <UserAvatar name={playerName || 'Guest'} size={48} />
                 <input 
                   type="text" 
                   placeholder="Your Nickname" 

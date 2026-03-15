@@ -6,13 +6,21 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
 interface SocketContextProps {
   socket: Socket | null;
   isConnected: boolean;
+  room: any;
+  setRoom: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const SocketContext = createContext<SocketContextProps>({ socket: null, isConnected: false });
+const SocketContext = createContext<SocketContextProps>({ 
+  socket: null, 
+  isConnected: false, 
+  room: null, 
+  setRoom: () => {} 
+});
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [room, setRoom] = useState<any>(null);
 
   useEffect(() => {
     const newSocket = io(SOCKET_URL);
@@ -52,7 +60,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected }}>
+    <SocketContext.Provider value={{ socket, isConnected, room, setRoom }}>
       {children}
     </SocketContext.Provider>
   );

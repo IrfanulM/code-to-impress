@@ -76,6 +76,10 @@ io.on('connection', (socket) => {
     roomManager.submitVote(socket.id, roomId, votedPlayerId, score);
   });
 
+  socket.on('sendMessage', ({ roomId, text }) => {
+    roomManager.sendMessage(socket.id, roomId, text);
+  });
+
   socket.on('disconnect', () => {
     roomManager.handleDisconnect(socket.id);
     console.log('User disconnected:', socket.id);

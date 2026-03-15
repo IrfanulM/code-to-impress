@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import Avatar from 'boring-avatars';
+import { UserAvatar } from './UserAvatar';
 import { useEffect, useState } from 'react';
 
 export function Results({ room }: { room: any }) {
@@ -108,14 +108,7 @@ export function Results({ room }: { room: any }) {
                   alignItems: 'center',
                   gap: '24px'
                 }}>
-                  <div style={{ width: isTop ? '64px' : '48px', height: isTop ? '64px' : '48px', border: 'var(--line-thickness) solid var(--border-color)', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <Avatar 
-                      size={isTop ? 64 : 48} 
-                      name={player.name} 
-                      variant="beam" 
-                      colors={[['#E03C31', '#005BBB', '#FFD100'][(player.name || '').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) % 3]]} 
-                    />
-                  </div>
+                  <UserAvatar name={player.name} size={isTop ? 64 : 48} />
                   <h2 style={{ 
                     margin: 0, 
                     fontSize: isTop ? '2.5rem' : '1.5rem', 

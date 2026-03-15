@@ -100,8 +100,6 @@ button.no-swoop::before {
 
 button.no-swoop:hover {
   color: inherit !important;
-  transform: none !important;
-  box-shadow: none !important;
 }
 
 button:disabled {

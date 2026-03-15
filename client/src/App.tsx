@@ -7,15 +7,18 @@ import { TemplateSelection } from './components/TemplateSelection';
 import { Voting } from './components/Voting';
 import { Results } from './components/Results';
 import { GeometricBackground } from './components/GeometricBackground';
+import { Chat } from './components/Chat';
+import { MessageCircle, X } from 'lucide-react';
 
 function GameController() {
   const { roomId } = useParams();
-  const { socket, isConnected } = useSocket();
-  const [room, setRoom] = useState<any>(null);
+  const { socket, isConnected, room, setRoom } = useSocket();
   const [hostReassignToast, setHostReassignToast] = useState<string | null>(null);
   const [nameTakenToast, setNameTakenToast] = useState(false);
   const [disconnectedInfo, setDisconnectedInfo] = useState<{ playerName: string; expiresAt: number } | null>(null);
   const [disconnectTimeLeft, setDisconnectTimeLeft] = useState<number>(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,7 +106,7 @@ function GameController() {
     if (!roomId && room) {
       setRoom(null);
     }
-  }, [roomId, room]);
+  }, [roomId]); // Remove 'room' from dependencies so it doesn't trigger during creation/join flow
 
   // Drive countdown for the disconnect overlay
   useEffect(() => {
@@ -269,6 +272,77 @@ function GameController() {
         >
           Name already taken
         </div>
+      )}
+
+      {room && (
+        <>
+          <Chat 
+            room={room} 
+            isOpen={isChatOpen} 
+            onClose={() => setIsChatOpen(false)}
+            onNewMessage={() => !isChatOpen && setUnreadCount(prev => prev + 1)}
+          />
+          <button
+            className="no-swoop"
+            onClick={() => {
+              setIsChatOpen(!isChatOpen);
+              if (!isChatOpen) setUnreadCount(0);
+            }}
+            style={{
+              position: 'fixed',
+              bottom: '32px',
+              right: '32px',
+              width: '56px',
+              height: '56px',
+              padding: 0, // Reset global button padding
+              borderRadius: '50%',
+              background: 'var(--secondary)',
+              color: 'white',
+              border: 'var(--line-thickness) solid var(--border-color)',
+              boxShadow: '4px 4px 0px var(--border-color)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 1200,
+              overflow: 'visible',
+              transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1) translateY(-4px)';
+              e.currentTarget.style.background = 'var(--primary)';
+              e.currentTarget.style.boxShadow = '8px 8px 0px var(--border-color)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1) translateY(0)';
+              e.currentTarget.style.background = 'var(--secondary)';
+              e.currentTarget.style.boxShadow = '4px 4px 0px var(--border-color)';
+            }}
+          >
+            {isChatOpen ? <X size={24} /> : <MessageCircle size={24} />}
+            {unreadCount > 0 && !isChatOpen && (
+              <div style={{
+                position: 'absolute',
+                top: '-4px',
+                right: '-4px',
+                background: 'var(--primary)',
+                color: 'white',
+                minWidth: '22px',
+                height: '22px',
+                borderRadius: '11px',
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid white',
+                padding: '0 4px'
+              }}>
+                {unreadCount}
+              </div>
+            )}
+          </button>
+        </>
       )}
     </>
   );

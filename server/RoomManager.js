@@ -24,7 +24,8 @@ export class RoomManager {
       settings: {
         gameDuration: 10,
         disableCopyPaste: false
-      }
+      },
+      messages: []
     });
     
     this.playerRooms.set(socket.id, roomId);
@@ -204,6 +205,32 @@ export class RoomManager {
     if (player) {
       player.css = css;
     }
+  }
+
+  sendMessage(socketId, roomId, text) {
+    const room = this.rooms.get(roomId);
+    if (!room) return;
+
+    const player = room.players.find(p => p.id === socketId);
+    if (!player) return;
+
+    const message = {
+      id: Math.random().toString(36).substring(2, 9),
+      senderId: socketId,
+      senderName: player.name,
+      text: text.substring(0, 500), // Limit length
+      timestamp: Date.now()
+    };
+
+    room.messages.push(message);
+    
+    // Keep only last 100 messages to save memory
+    if (room.messages.length > 100) {
+      room.messages.shift();
+    }
+
+    this.io.to(roomId).emit('newMessage', message);
+    this.io.to(roomId).emit('roomUpdated', this._sanitizeRoom(room));
   }
 
   finishGameTime(roomId) {
@@ -480,7 +507,8 @@ export class RoomManager {
           votes: opt.votes // array of socket IDs who voted for this
       })) : null,
       settings: room.settings,
-      forfeitWin: room.forfeitWin || false
+      forfeitWin: room.forfeitWin || false,
+      messages: room.messages
     };
   }
 }
