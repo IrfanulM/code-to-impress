@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { SocketProvider, useSocket } from './context/SocketContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Lobby } from './components/Lobby';
 import { GameRoom } from './components/GameRoom';
 import { TemplateSelection } from './components/TemplateSelection';
@@ -87,8 +87,10 @@ function GameController() {
     return () => clearInterval(interval);
   }, [disconnectedInfo]);
 
-  // Tab/refresh close: show "Are you sure?" and if they leave, mark as explicit leave so server skips grace period
+  // Tab/refresh close: show "Are you sure?" and if they leave, remove immediately so the 60s timer never starts
   const isActiveGame = room?.state === 'PLAYING' || room?.state === 'VOTING';
+  const socketRef = useRef(socket);
+  socketRef.current = socket;
   useEffect(() => {
     if (!isActiveGame) return;
 
@@ -103,6 +105,7 @@ function GameController() {
 
     const handleUnload = () => {
       try {
+        socketRef.current?.emit('leaveRoom');
         const playerId = localStorage.getItem('cti_lastPlayerId');
         if (playerId) {
           const payload = JSON.stringify({ socketId: playerId });

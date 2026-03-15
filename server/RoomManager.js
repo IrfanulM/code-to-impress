@@ -403,6 +403,23 @@ export class RoomManager {
     this.explicitLeaves.add(socketId);
   }
 
+  /**
+   * Called when we receive the tab-close beacon: remove the player immediately so the
+   * 60s timer never starts for others. When the socket actually disconnects later,
+   * handleDisconnect will no-op (player already removed from playerRooms).
+   */
+  processExplicitLeaveByBeacon(socketId) {
+    const roomId = this.playerRooms.get(socketId);
+    if (!roomId) return;
+    const room = this.rooms.get(roomId);
+    if (!room) {
+      this.playerRooms.delete(socketId);
+      return;
+    }
+    this.playerRooms.delete(socketId);
+    this._removePlayerFromRoom(roomId, room, socketId);
+  }
+
   /** Remove one player from a room and apply forfeit / host reassignment / room delete. */
   _removePlayerFromRoom(roomId, room, socketId) {
     if (room.state !== 'RESULTS') {

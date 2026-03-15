@@ -13,11 +13,11 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Tab-close / refresh: client sends beacon so next disconnect is treated as explicit leave (no grace period)
+// Tab-close / refresh: client sends beacon — remove player immediately so the 60s timer never starts
 app.post('/api/leave-room', (req, res) => {
   const { socketId } = req.body || {};
   if (socketId) {
-    roomManager.markExplicitLeave(socketId);
+    roomManager.processExplicitLeaveByBeacon(socketId);
   }
   res.status(204).end();
 });
